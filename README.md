@@ -112,6 +112,8 @@ npm install
 # 公益代理地址生成：https://statuslive-vercel.vercel.app/reejishu 美丽世界提供
 VITE_UPTIMEROBOT_API_URL = "https://statuslive.freejishu.com/core/?publickey=e68c941e-1b5f-59c8-68ab-442d2a75b068"  # 代理模式必填
 
+#注意 测试发现使用模式2后，检测的项目链接无法跳转，如果你刚好不需要调整对应项目的链接可以使用
+
 # ========== 通用配置（所有模式均生效） ==========
 VITE_APP_TITLE = "野猪佩奇弟弟"                                   # 监控面板站点名称（自定义）
 # 监控面板排序方式：可选 friendly_name（按名称）/ create_datetime（按创建时间）
