@@ -13,10 +13,10 @@
 </p>
 
 <p align="center">
-  <a href="https://vercel.com/new/clone?repository-url=https://github.com/JLinmr/uptime-status" title="使用 Vercel 部署">
+  <a href="https://vercel.com/new/clone?repository-url=https://github.com/RunWang925/Uptime-Status" title="使用 Vercel 部署">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" />
   </a>
-  <a href="https://edgeone.ai/pages/new?repository-url=https%3A%2F%2Fgithub.com%2FJLinMr%2FUptime-Status&output-directory=dist&install-command=npm%20install&build-command=npm%20run%20build" target="_blank" rel="noopener noreferrer">
+  <a href="https://edgeone.ai/pages/new?repository-url=https%3A%2F%2Fgithub.com%2FRunWang925%2FUptime-Status&output-directory=dist&install-command=npm%20install&build-command=npm%20run%20build" target="_blank" rel="noopener noreferrer">
     <img src="https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg" alt="Deploy with EdgeOne Pages">
   </a>
   <a href="https://console.cloud.tencent.com/edgeone/pages?action=create" title="使用腾讯云 EdgeOne Pages 部署">
@@ -35,38 +35,42 @@
 
 ## 📖 简介
 
+最初接触这类工具时，是通过清羽飞扬大佬的推荐了解到 StatusLive 项目（仓库地址：https://github.com/willow-god/StatusLive）
+
+但受限于个人技术水平，在部署该项目时未能成功。直到遇到当前这个站点监测项目，不仅顺利完成部署，其稳定的性能也让我最终选择将它作为日常使用的监控工具。
 站点监测是一个基于 UptimeRobot API 开发的站点状态监控面板，支持多站点状态监控、实时通知、故障统计等功能。界面简洁美观，响应式设计，支持亮暗主题切换。
+遇到的问题 部署好后 加载需要差不多20秒才能加载处理，最后找到了原因并解决
 
-## ✨ 功能预览
+## 🚩 常见问题解决（新增核心章节）
 
-![功能预览](https://i1.wp.com/dev.ruom.top/i/2025/01/25/629114.webp)
+### 问题1：页面加载极慢（20秒+）
+部署这个项目后发现访问需要20秒以上，然后检查发现是由于统计脚本无法访问，直接删除index.html的统计脚本
 
-## ✨ 特性
+- 根因：`index.html` 中的统计脚本直接删除
+```bash
+    <!-- 统计 -->
+    <script defer src="https://um.bsgun.cn/tongjifenxi.js" data-website-id="6ed9cbf7-8824-4a8a-80b2-eab7f5dd1e00"></script>
+```
 
-- 📊 实时监控：支持多种监控方式
-- 📱 响应式设计：适配移动端和桌面端
-- 🌓 主题切换：支持亮色/暗色主题
-- 📈 数据统计：可视化展示可用率和响应时间
-- 🔔 故障记录：详细的宕机记录和原因分析
-- 🔄 自动刷新：定时自动更新监控数据
-- 💫 平滑动画：流畅的用户界面交互体验
 
 ## ⚙️ 部署配置
 
 ### 环境要求
 
 - Node.js >= 16.16.0
+
 - NPM >= 8.15.0 或 PNPM >= 8.0.0
 
 ### 获取 UptimeRobot API Key
 
 1. 注册/登录 [UptimeRobot](https://uptimerobot.com/)
+
 2. 进入 [Integrations & API](https://dashboard.uptimerobot.com/integrations)
+
 3. 下拉到最底部在 Main API keys 部分创建 **Read-Only API Key**
+
 4. 复制生成的 API Key
-
 ### API 代理说明
-
 本项目支持以下三种部署方式,均可实现自动处理跨域请求:
 
 1. **腾讯云 EdgeOne Pages**
@@ -74,28 +78,15 @@
    - 连接到GitHub，选择项目
    - 框架预设选择Vue，点击开始部署
    - 使用默认配置 `VITE_UPTIMEROBOT_API_URL = "/api/status"`
+   - 部署前先自行修改`.env`
 
-2. **Vercel**
-   - 点击上方黑色 "Deploy" 按钮
-   - 连接到GitHub，选择项目
-   - 填写项目名称，点击Create
-   - 使用默认配置 `VITE_UPTIMEROBOT_API_URL = "/api/status"`
 
-3. **Cloudflare Pages**
-   - 点击上方橙色 "Deploy" 按钮
-   - 找到计算(worker) 部分
-   - 点击创建，选择Pages，连接到GitHub，选择项目，点击开始创建
-   - 框架预设选择Vue，点击保持并部署
-   - 使用默认配置 `VITE_UPTIMEROBOT_API_URL = "/api/status"`
 
-4. **其他平台**
-   - 自行搭建 API 代理
-   - 在 `.env` 文件中设置 `VITE_UPTIMEROBOT_API_URL` 为你的 API 代理地址
 ### 快速开始
 
 1. 克隆项目
 ```bash
-git clone https://github.com/JLinmr/uptime-status.git
+git clone https://github.com/RunWang925/Uptime-Status.git
 cd uptime-status
 ```
 
@@ -110,22 +101,29 @@ npm install
 
 在 `.env` 文件中修改以下配置：
 ```bash
-# UptimeRobot API Key
-VITE_UPTIMEROBOT_API_KEY = "ur2290572-af4663a4e3f83be26119abbe"
+# ========== Uptime-Status 核心配置 ==========
+# 【模式1：（作者原有模式）】
+# 需同时配置 API Key + 代理地址
+# VITE_UPTIMEROBOT_API_KEY = "ur3159051-bfdaacf048a30618ac2e6582"  # 必填（UptimeRobot只读API Key）
+# VITE_UPTIMEROBOT_API_URL = "/api/status"                       # 模式1必填：指向自建后端代理（取消注释启用）
 
-# UptimeRobot API URL 
-# 除腾讯云 EdgeOne Pages 、vercel 、cloudflare pages 外 
-## 其它部署方式需要自行搭建 API 代理 
-## 代理地址 https://api.uptimerobot.com/v2/getMonitors
-VITE_UPTIMEROBOT_API_URL = "/api/status"
+# 【模式2：代理模式（我自己乱改的）】
+# 无需API Key，仅配置公益代理地址（自动隐藏Key，更安全）
+# 公益代理地址生成：https://statuslive-vercel.vercel.app/reejishu 美丽世界提供
+VITE_UPTIMEROBOT_API_URL = "https://statuslive.freejishu.com/core/?publickey=e68c941e-1b5f-59c8-68ab-442d2a75b068"  # 代理模式必填
 
-# 站点名称
-VITE_APP_TITLE = "梦爱吃鱼"
-
-# 监控面板排序方式
-# 支持 friendly_name 和 create_datetime 两种方式
+# ========== 通用配置（所有模式均生效） ==========
+VITE_APP_TITLE = "野猪佩奇弟弟"                                   # 监控面板站点名称（自定义）
+# 监控面板排序方式：可选 friendly_name（按名称）/ create_datetime（按创建时间）
 VITE_UPTIMEROBOT_STATUS_SORT = "friendly_name"
+
+# ========== 部署&使用注意事项 ==========
+# 1. 模式切换：启用对应模式时，仅保留该模式的配置（注释另一模式）
+# 2. 加载慢问题：删除index.html中统计脚本可解决（核心优化点）
+# 3. 平台适配：腾讯云EdgeOne我目前部署测试无问题
 ```
+这个代理地址部分主要是参考了[StatusLive 项目](https://github.com/willow-god/StatusLive) 项目的说明
+代理模式说明：参考自 StatusLive 项目，主要作用是隐藏 API Key 以提高安全性其他用途我不知道
 
 4. 开发调试
 ```bash
@@ -143,6 +141,35 @@ pnpm build
 npm run build
 ```
 构建的文件在 `dist` 目录下，将 `dist` 目录部署到服务器即可。
+
+6. 修改后上传
+
+   查看修改状态（可选，但推荐，确认修改内容）：
+   ```
+   git status # 会显示哪些文件被修改、新增或删除。
+   ```
+  
+   将修改添加到暂存区：
+   ```
+   git add .  #添加所有修改（包括新增、修改、删除的文件）：
+   ```
+   提交暂存区的修改到本地仓库：
+
+   ```
+   git commit -m "删除站点统计链接，解决打开网页慢问题" 
+   ```
+   创建版本标签
+   ```
+   git tag -a v0.0.1 -m "v1.0.0: 初始化站点监测项目"
+   ```
+   推送标签到远程仓库
+   ```
+   git push origin v1.0.0
+   ```
+   推送到远程仓库：
+   ```
+   git push origin main # 默认分支是 master（旧版本 GitHub 常用）新版 main
+   ```
 
 ## CDN赞助
 
@@ -162,3 +189,7 @@ npm run build
 - [Vue.js](https://vuejs.org/) - 前端框架
 - [Tailwind CSS](https://tailwindcss.com/) - CSS 框架
 - [Chart.js](https://www.chartjs.org/) - 图表库 
+- [freejishu美丽世界](https://www.freejishu.com/)  - 提供公益代理服务
+
+
+
